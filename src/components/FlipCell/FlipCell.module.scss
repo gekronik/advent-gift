@@ -1,0 +1,112 @@
+.cell {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    cursor: pointer;
+    perspective: 900px;
+
+    &:disabled {
+        cursor: not-allowed;
+        opacity: 0.95;
+    }
+
+    &:focus-visible {
+        outline: 2px solid currentColor;
+        outline-offset: 2px;
+        border-radius: 16px;
+    }
+}
+
+.cell_rollActive .faceFront,
+.cell_rollActive .faceBack {
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.9), 0 16px 34px rgba(0, 0, 0, 0.14);
+}
+
+.inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: block;
+    transform-style: preserve-3d;
+    transition: transform 520ms ease;
+}
+
+.cell_flipped .inner {
+    transform: rotateY(180deg);
+}
+
+.faceFront,
+.faceBack {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    border-radius: 16px;
+    display: grid;
+    place-items: center;
+    padding: 10px;
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.12);
+}
+
+.faceFront {
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    gap: 6px;
+}
+
+.faceBack {
+    transform: rotateY(180deg);
+    background: #111827;
+    color: #fff;
+    text-align: center;
+    gap: 8px;
+    align-content: center;
+}
+
+.day {
+    font-size: 20px;
+    font-weight: 900;
+
+    @media (max-width: 420px) {
+        font-size: 18px;
+    }
+}
+
+.frontIcon {
+    font-size: 16px;
+    opacity: 0.95;
+}
+
+.hint {
+    font-size: 11px;
+    opacity: 0.6;
+    line-height: 1.1;
+
+    @media (max-width: 420px) {
+        font-size: 10px;
+    }
+}
+
+.backIcon {
+    font-size: 32px;
+    line-height: 1;
+}
+
+.title {
+    font-size: 12px;
+    font-weight: 750;
+    line-height: 1.2;
+    opacity: 0.98;
+
+    /* ✅ кламп названия */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    @media (max-width: 420px) {
+        font-size: 11px;
+    }
+}

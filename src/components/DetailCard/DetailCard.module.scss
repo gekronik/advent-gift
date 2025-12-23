@@ -1,0 +1,95 @@
+.card {
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 18px;
+    padding: 16px;
+    box-shadow: 0 14px 38px rgba(0, 0, 0, 0.10);
+    display: grid;
+    gap: 12px;
+    height: fit-content;
+}
+
+.top {
+    display: grid;
+    gap: 4px;
+}
+
+.number {
+    font-weight: 950;
+    font-size: 18px;
+    letter-spacing: -0.01em;
+}
+
+.date {
+    font-size: 13px;
+    opacity: 0.75;
+}
+
+.preview {
+    border-radius: 16px;
+    overflow: hidden;
+
+    /* вариант A: фикс высота */
+    height: 260px;
+
+    /* вариант B: или вместо height — пропорция */
+    /* aspect-ratio: 16 / 10; */
+
+    display: block;
+    position: relative;
+}
+
+.img {
+    display: block;     /* важно: убирает "прыжки" из-за inline img */
+    width: 100%;
+    height: 100%;
+    //object-fit: cover;  /* cover = заполняет, обрезая края */
+     object-fit: contain;  // если хочешь чтобы целиком помещалось без обрезки
+}
+
+.preview_coffee { background: linear-gradient(135deg, rgba(180, 83, 9, 0.20), rgba(17, 24, 39, 0.35)); }
+.preview_sweet { background: linear-gradient(135deg, rgba(236, 72, 153, 0.20), rgba(17, 24, 39, 0.35)); }
+.preview_beauty { background: linear-gradient(135deg, rgba(99, 102, 241, 0.22), rgba(17, 24, 39, 0.35)); }
+.preview_perfume { background: linear-gradient(135deg, rgba(16, 185, 129, 0.22), rgba(17, 24, 39, 0.35)); }
+
+.previewInner {
+    text-align: center;
+    color: #fff;
+    display: grid;
+    gap: 10px;
+    padding: 18px;
+}
+
+.bigEmoji {
+    font-size: 56px;
+    line-height: 1;
+}
+
+.previewHint {
+    font-size: 12px;
+    opacity: 0.85;
+}
+
+
+.title {
+    font-size: 18px;
+    font-weight: 950;
+    line-height: 1.2;
+}
+
+.sub {
+    font-size: 12px;
+    opacity: 0.7;
+    line-height: 1.4;
+}
+
+.emptyTitle {
+    font-size: 18px;
+    font-weight: 950;
+}
+
+.emptyText {
+    font-size: 13px;
+    opacity: 0.75;
+    line-height: 1.5;
+}

@@ -31,6 +31,8 @@
     display: block;
     transform-style: preserve-3d;
     transition: transform 520ms ease;
+    -webkit-transform-style: preserve-3d;
+    will-change: transform;
 }
 
 .cell_flipped .inner {
@@ -47,6 +49,8 @@
     place-items: center;
     padding: 10px;
     box-shadow: 0 10px 26px rgba(0, 0, 0, 0.12);
+    -webkit-backface-visibility: hidden;
+    transform: translateZ(0); /* помогает Safari */
 }
 
 .faceFront {

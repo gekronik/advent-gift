@@ -9,7 +9,7 @@ export type GiftItem = {
 
 export const gifts: GiftItem[] = [
     { id: "c1", title: "Кофе клубника со сливками", category: "Кофе", imageUrl: '/img/gifts/strawberry.jpg' },
-    { id: "c2", title: "Кофе бейлиз", category: "Кофе", imageUrl: '/img/gifts/black-cherry.jpg' },
+    { id: "c2", title: "Кофе бейлиз", category: "Кофе", imageUrl: '/img/gifts/baileys.jpg' },
     { id: "c3", title: "Кофе ирландский крем", category: "Кофе", imageUrl: '/img/gifts/irland.jpg' },
     { id: "c4", title: "Кофе молочный шоколад", category: "Кофе", imageUrl: '/img/gifts/milk.jpg' },
     { id: "c5", title: "Кофе английские сливки", category: "Кофе", imageUrl: '/img/gifts/english.jpg' },

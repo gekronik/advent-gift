@@ -13,6 +13,7 @@ export type StoredState = {
     remainingIds: string[];
     selectedCellIndex: number | null;
     lastOpenDate: string | null; // "YYYY-MM-DD"
+    opensTodayCount?: number;
 };
 
 export function loadState(): StoredState | null {
@@ -45,13 +46,16 @@ export function toStoredState(
     revealed: Array<RevealedCell | null>,
     remaining: GiftItem[],
     selectedCellIndex: number | null,
-    lastOpenDate: string | null
+    lastOpenDate: string | null,
+    opensTodayCount: number
+
 ): StoredState {
     return {
         revealed,
         remainingIds: remaining.map((g) => g.id),
         selectedCellIndex,
         lastOpenDate,
+        opensTodayCount
     };
 }
 
@@ -64,6 +68,7 @@ export function fromStoredState(
     remaining: GiftItem[];
     selectedCellIndex: number | null;
     lastOpenDate: string | null;
+    opensTodayCount: number; // ✅ добавили
 } {
     const byId = new Map(all.map((g) => [g.id, g] as const));
 
@@ -85,5 +90,8 @@ export function fromStoredState(
 
     const lastOpenDate = typeof stored.lastOpenDate === "string" ? stored.lastOpenDate : null;
 
-    return { revealed, remaining, selectedCellIndex, lastOpenDate };
+    const opensTodayCount =
+        typeof stored.opensTodayCount === "number" ? stored.opensTodayCount : 0;
+
+    return { revealed, remaining, selectedCellIndex, lastOpenDate, opensTodayCount };
 }

@@ -55,6 +55,7 @@ export default function App() {
     );
     const [selectedCellIndex, setSelectedCellIndex] = useState<number | null>(null);
     const [lastOpenDate, setLastOpenDate] = useState<string | null>(null);
+    const [opensTodayCount, setOpensTodayCount] = useState<number>(0);
 
     const [rollingIndex, setRollingIndex] = useState<number | null>(null);
     const [isRolling, setIsRolling] = useState(false);
@@ -69,7 +70,10 @@ export default function App() {
     const openedCount = useMemo(() => revealed.filter(Boolean).length, [revealed]);
     const unopenedCount = CELLS_COUNT - openedCount;
 
-    const canOpenToday = lastOpenDate !== todayKey;
+    const MAX_PER_DAY = 2;
+
+    const opensUsedToday = lastOpenDate === todayKey ? opensTodayCount : 0;
+    const canOpenToday = opensUsedToday < MAX_PER_DAY;
 
     // Правая карточка: мета выбранной ячейки
     const selectedMeta = useMemo(() => {
@@ -100,6 +104,7 @@ export default function App() {
                 setRevealed(restored.revealed);
                 setSelectedCellIndex(restored.selectedCellIndex);
                 setLastOpenDate(restored.lastOpenDate);
+                setOpensTodayCount(restored.opensTodayCount ?? 0);
             }
 
             try {
@@ -109,6 +114,7 @@ export default function App() {
                     setRevealed(restored.revealed);
                     setSelectedCellIndex(restored.selectedCellIndex);
                     setLastOpenDate(restored.lastOpenDate);
+                    setOpensTodayCount(restored.opensTodayCount ?? 0);
                 }
             } catch (e) {
                 console.warn("Cloud load failed:", e);
@@ -122,7 +128,13 @@ export default function App() {
     useEffect(() => {
         if (!hydrated) return;
 
-        const stateToSave = toStoredState(revealed, gifts, selectedCellIndex, lastOpenDate);
+        const stateToSave = toStoredState(
+            revealed,
+            gifts,
+            selectedCellIndex,
+            lastOpenDate,
+            opensTodayCount
+        );
 
         saveState(stateToSave);
 
@@ -136,7 +148,16 @@ export default function App() {
         return () => {
             if (cloudTimerRef.current) window.clearTimeout(cloudTimerRef.current);
         };
-    }, [hydrated, revealed, selectedCellIndex, lastOpenDate]);
+    }, [hydrated, revealed, selectedCellIndex, lastOpenDate,opensTodayCount]);
+
+    useEffect(() => {
+        if (!hydrated) return;
+
+        // если наступил новый день — обнуляем лимит
+        if (lastOpenDate !== todayKey && opensTodayCount !== 0) {
+            setOpensTodayCount(0);
+        }
+    }, [hydrated, todayKey, lastOpenDate, opensTodayCount]);
 
     const stopRolling = () => {
         if (rollIntervalRef.current) window.clearInterval(rollIntervalRef.current);
@@ -180,6 +201,10 @@ export default function App() {
 
         setSelectedCellIndex(cellIndex);
         setLastOpenDate(openedAt);
+        setOpensTodayCount((prev) => {
+            const isSameDay = lastOpenDate === openedAt;
+            return (isSameDay ? prev : 0) + 1;
+        });
     };
 
     const onCellClick = (index: number) => {
@@ -249,7 +274,9 @@ export default function App() {
                         <div className={cl.sub}>
                             Открыто: <b>{openedCount}</b> / {CELLS_COUNT} · Осталось: <b>{unopenedCount}</b>
                             {!canOpenToday ? (
-                                <span className={cl.todayLock}> · Сегодня уже открыто ✅</span>
+                                <span className={cl.todayLock}>
+  · Сегодня: {opensUsedToday} / {MAX_PER_DAY}
+</span>
                             ) : null}
                         </div>
                     </div>
@@ -278,7 +305,7 @@ export default function App() {
                                 {isRolling
                                     ? "Флажок прыгает по ячейкам — через ~5 секунд откроется выбранная."
                                     : !canOpenToday
-                                        ? "Сегодня уже открыт один подарок. Следующий можно открыть после 00:00."
+                                        ? `Сегодня уже открыто ${MAX_PER_DAY} подарка. Следующие — после 00:00.`
                                         : "Открытие только через Random. Открытые ячейки можно кликать для просмотра справа."}
                             </div>
                         </div>
